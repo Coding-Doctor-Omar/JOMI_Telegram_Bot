@@ -120,15 +120,15 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
         send_msg(chat_id=chat_id, msg="An error has occurred while processing the video link. Either the link is incorrect or a backend server error has occurred. Please try again.")
         return
 
-    message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:
+    message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:<br>
 
-[Video \(224p\)]({unlocked_urls['224p']})
-[Video \(360p\)]({unlocked_urls['360p']})
-[Video \(540p\)]({unlocked_urls['540p']})
-[HD Video \(720p\)]({unlocked_urls['720p']})
-[Full HD Video \(1080p\)]({unlocked_urls['1080p']})"""
+<a href="{unlocked_urls['224p']}">Video (224p)</a><br>
+<a href="{unlocked_urls['360p']}">Video (360p)</a><br>
+<a href="{unlocked_urls['540p']}">Video (540p)</a><br>
+<a href="{unlocked_urls['720p']}">HD Video (720p)</a><br>
+<a href="{unlocked_urls['1080']}">Full HD Video (1080p)</a><br>"""
 
-    send_msg(chat_id=chat_id, msg=message, parse_mode="MarkdownV2")
+    send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
 
     # Send subtitles
     method = "/sendDocument"
