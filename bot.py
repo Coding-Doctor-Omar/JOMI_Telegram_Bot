@@ -1,5 +1,6 @@
 from flask import Flask, request
 from curl_cffi import requests as cureq
+from threading import Thread
 import requests
 import os
 
@@ -159,14 +160,15 @@ def process_message():
         if user_message in valid_commands:
             action = actions[user_message]
             action(chat_id=chat_id)
+            return "OK", 200
         else:
             send_msg(chat_id=chat_id, msg="Processing video link...")
-            send_unlocked_content(chat_id=chat_id, user_msg=user_message)
+            Thread(target=send_unlocked_content, args=(chat_id, user_message)).start()
+            return "OK", 200
 
     else:
         send_msg(chat_id=chat_id, msg="The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.")
 
-    return "OK", 200
 
 @app.route("/")
 def home():
