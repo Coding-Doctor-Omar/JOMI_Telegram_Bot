@@ -152,9 +152,12 @@ def process_message():
         "/how_to_use": handle_how_to_use_command
     }
 
-    update = request.get_json()
-    chat_id = update["message"]["chat"]["id"]
-    user_message = update["message"]["text"]
+    try:
+        update = request.get_json()
+        chat_id = update["message"]["chat"]["id"]
+        user_message = update["message"]["text"]
+    except Exception:
+        return "OK", 200
 
     if msg_is_valid(user_message):
         if user_message in valid_commands:
