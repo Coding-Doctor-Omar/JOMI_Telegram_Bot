@@ -168,6 +168,7 @@ def process_message():
 
     else:
         send_msg(chat_id=chat_id, msg="The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.")
+        return "OK", 200
 
 
 @app.route("/")
