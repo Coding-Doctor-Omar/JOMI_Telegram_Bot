@@ -153,6 +153,10 @@ def process_message():
     }
 
     update = request.get_json()
+
+    if "message" not in update:
+        return "OK", 200
+
     chat_id = update["message"]["chat"]["id"]
     user_message = update["message"]["text"]
 
