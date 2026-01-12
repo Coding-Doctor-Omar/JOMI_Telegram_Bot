@@ -162,7 +162,7 @@ def process_message():
             return "OK", 200
         else:
             send_msg(chat_id=chat_id, msg="Processing video link...")
-            send_unlocked_content(chat_id=chat_id, user_msg=user_message)
+            print(user_message)
             return "OK", 200
 
     else:
