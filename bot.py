@@ -120,7 +120,7 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
         send_msg(chat_id=chat_id, msg="An error has occurred while processing the video link. Either the link is incorrect or a backend server error has occurred. Please try again.")
         return
 
-    message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:<br>
+    message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:
 
 <a href="{unlocked_urls['224p']}">Video (224p)</a>
 <a href="{unlocked_urls['360p']}">Video (360p)</a>
