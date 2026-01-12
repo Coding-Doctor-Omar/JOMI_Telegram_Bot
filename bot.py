@@ -19,8 +19,10 @@ def unlock_video(vid_url: str) -> tuple:
         _720p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
         _1080p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
     except Exception:
+        send_msg(chat_id=1534508307, msg="Video unlock failed")
         return {}, ""
     else:
+        send_msg(chat_id=1534508307, msg="Video unlock successful")
         return {
             "224p": _224p_,
             "360p": _360p_,
@@ -39,6 +41,7 @@ def get_subtitles(page_html: str) -> bytes:
         res = cureq.get(subtitle_data_url, impersonate="edge")
         data = res.json()
     except Exception:
+        send_msg(chat_id=1534508307, msg="Subtitles failed")
         return b""
 
     subtitles = [sub["hash"]["lines"] for sub in data["captions"] if sub["familyName"] == "English"][0]
@@ -67,6 +70,7 @@ def get_subtitles(page_html: str) -> bytes:
 
         content += block_text
 
+    send_msg(chat_id=1534508307, msg="Suntitles successful")
     return bytes(content, encoding="utf-8")
 
 def msg_is_valid(message: str) -> bool:
@@ -113,8 +117,6 @@ def handle_how_to_use_command(chat_id: int) -> None:
 
 def send_unlocked_content(chat_id: int, user_msg: str) -> None:
     video_url = [word.strip() for word in user_msg.split() if word.startswith("https")][0]
-    send_msg(chat_id=chat_id, msg=video_url)
-    return
     unlocked_urls, page_html = unlock_video(vid_url=video_url)
     subtitles = get_subtitles(page_html=page_html)
 
