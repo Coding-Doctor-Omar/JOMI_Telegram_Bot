@@ -157,8 +157,11 @@ def process_message():
     if "message" not in update:
         return "OK", 200
 
-    chat_id = update["message"]["chat"]["id"]
-    user_message = update["message"]["text"]
+    try:
+        chat_id = update["message"]["chat"]["id"]
+        user_message = update["message"]["text"]
+    except Exception:
+        return "OK", 200
 
     if msg_is_valid(user_message):
         if user_message in valid_commands:
