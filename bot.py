@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 TELEGRAM_API = "https://api.telegram.org/bot"
 BOT_TOKEN = os.environ.get("jomi_downloader_bot_token")
+VALID_COMMANDS = ["/start", "/how_to_use"]
 
 def unlock_video(vid_url: str) -> tuple:
     res = cureq.get(vid_url, impersonate="edge")
@@ -70,9 +71,7 @@ def get_subtitles(page_html: str) -> bytes:
     return bytes(content, encoding="utf-8")
 
 def msg_is_valid(message: str) -> bool:
-    valid_commands = ["/start", "/how_to_use"]
-
-    if message in valid_commands:
+    if message in VALID_COMMANDS:
         return True
 
     message_words = message.split()
@@ -111,6 +110,10 @@ def handle_how_to_use_command(chat_id: int) -> None:
     message = "To unlock a JOMI video, just send me the link for the video page without anything else in the message. JOMI video pages have links with a structure like this:\n\nhttps://jomi.com/article/..."
     send_msg(chat_id=chat_id, msg=message)
 
+def handle_source_code_command(chat_id: int) -> None:
+    message = "Hmm, so you are interested. Very well, here is my source code on GitHub:\n\nhttps://github.com/Coding-Doctor-Omar/JOMI_Telegram_Bot"
+    send_msg(chat_id=chat_id, msg=message)
+
 def send_unlocked_content(chat_id: int, user_msg: str) -> None:
     video_url = [word.strip() for word in user_msg.split() if word.startswith("https")][0]
     unlocked_urls, page_html = unlock_video(vid_url=video_url)
@@ -146,10 +149,10 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
 
 @app.route("/telegram", methods=["POST"])
 def process_message():
-    valid_commands = ["/start", "/how_to_use"]
     actions = {
         "/start": handle_start_command,
-        "/how_to_use": handle_how_to_use_command
+        "/how_to_use": handle_how_to_use_command,
+        "/source-code": handle_source_code_command
     }
 
     update = request.get_json()
@@ -164,7 +167,7 @@ def process_message():
         return "OK", 200
 
     if msg_is_valid(user_message):
-        if user_message in valid_commands:
+        if user_message in VALID_COMMANDS:
             action = actions[user_message]
             action(chat_id=chat_id)
             return "OK", 200
