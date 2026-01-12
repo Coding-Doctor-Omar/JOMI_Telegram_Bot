@@ -122,11 +122,11 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
 
     message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:<br>
 
-<a href="{unlocked_urls['224p']}">Video (224p)</a><br>
-<a href="{unlocked_urls['360p']}">Video (360p)</a><br>
-<a href="{unlocked_urls['540p']}">Video (540p)</a><br>
-<a href="{unlocked_urls['720p']}">HD Video (720p)</a><br>
-<a href="{unlocked_urls['1080']}">Full HD Video (1080p)</a><br>"""
+<a href="{unlocked_urls['224p']}">Video (224p)</a>
+<a href="{unlocked_urls['360p']}">Video (360p)</a>
+<a href="{unlocked_urls['540p']}">Video (540p)</a>
+<a href="{unlocked_urls['720p']}">HD Video (720p)</a>
+<a href="{unlocked_urls['1080']}">Full HD Video (1080p)</a>"""
 
     send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
 
