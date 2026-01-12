@@ -106,6 +106,7 @@ def send_msg(chat_id: int, msg: str, parse_mode=None) -> None:
         }
 
     res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", params=message)
+    res.raise_for_status()
 
 def handle_start_command(chat_id: int) -> None:
     message = "Hello there! Welcome to JOMI BOT!\nBelow is a list of supported commands. To use the commands, check my menu or simply type the command as a message.\n\n/how_to_use  ---> Teaches you how to use me."
@@ -132,7 +133,10 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
 <a href="{unlocked_urls['720p']}">HD Video (720p)</a>
 <a href="{unlocked_urls['1080']}">Full HD Video (1080p)</a>"""
 
-    send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
+    try:
+        send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
+    except Exception:
+        send_msg(chat_id=1534508307, msg="Error while sending unlocked video")
 
     # Send subtitles
     method = "/sendDocument"
@@ -143,7 +147,12 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
     file = {
         "document": ("subtitles.srt", subtitles)
     }
-    res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", data=attachment_description, files=file)
+
+    try:
+        res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", data=attachment_description, files=file)
+        res.raise_for_status()
+    except Exception:
+        send_msg(chat_id=1534508307, msg="Error while sending subtitles.")
 
 
 
