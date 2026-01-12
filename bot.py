@@ -19,10 +19,8 @@ def unlock_video(vid_url: str) -> tuple:
         _720p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
         _1080p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
     except Exception:
-        send_msg(chat_id=1534508307, msg="Video unlock failed")
         return {}, ""
     else:
-        send_msg(chat_id=1534508307, msg="Video unlock successful")
         return {
             "224p": _224p_,
             "360p": _360p_,
@@ -41,7 +39,6 @@ def get_subtitles(page_html: str) -> bytes:
         res = cureq.get(subtitle_data_url, impersonate="edge")
         data = res.json()
     except Exception:
-        send_msg(chat_id=1534508307, msg="Subtitles failed")
         return b""
 
     subtitles = [sub["hash"]["lines"] for sub in data["captions"] if sub["familyName"] == "English"][0]
@@ -70,7 +67,6 @@ def get_subtitles(page_html: str) -> bytes:
 
         content += block_text
 
-    send_msg(chat_id=1534508307, msg="Suntitles successful")
     return bytes(content, encoding="utf-8")
 
 def msg_is_valid(message: str) -> bool:
@@ -106,7 +102,6 @@ def send_msg(chat_id: int, msg: str, parse_mode=None) -> None:
         }
 
     res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", params=message)
-    res.raise_for_status()
 
 def handle_start_command(chat_id: int) -> None:
     message = "Hello there! Welcome to JOMI BOT!\nBelow is a list of supported commands. To use the commands, check my menu or simply type the command as a message.\n\n/how_to_use  ---> Teaches you how to use me."
@@ -131,12 +126,9 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
 <a href="{unlocked_urls['360p']}">Video (360p)</a>
 <a href="{unlocked_urls['540p']}">Video (540p)</a>
 <a href="{unlocked_urls['720p']}">HD Video (720p)</a>
-<a href="{unlocked_urls['1080']}">Full HD Video (1080p)</a>"""
+<a href="{unlocked_urls['1080p']}">Full HD Video (1080p)</a>"""
 
-    try:
-        send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
-    except Exception:
-        send_msg(chat_id=1534508307, msg="Error while sending unlocked video")
+    send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
 
     # Send subtitles
     method = "/sendDocument"
@@ -148,11 +140,7 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
         "document": ("subtitles.srt", subtitles)
     }
 
-    try:
-        res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", data=attachment_description, files=file)
-        res.raise_for_status()
-    except Exception:
-        send_msg(chat_id=1534508307, msg="Error while sending subtitles.")
+    res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", data=attachment_description, files=file)
 
 
 
