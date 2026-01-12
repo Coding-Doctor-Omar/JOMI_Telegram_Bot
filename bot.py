@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 TELEGRAM_API = "https://api.telegram.org/bot"
 BOT_TOKEN = os.environ.get("jomi_downloader_bot_token")
-VALID_COMMANDS = ["/start", "/how_to_use"]
+VALID_COMMANDS = ["/start", "/how_to_use", "/source_code"]
 
 def unlock_video(vid_url: str) -> tuple:
     res = cureq.get(vid_url, impersonate="edge")
@@ -152,7 +152,7 @@ def process_message():
     actions = {
         "/start": handle_start_command,
         "/how_to_use": handle_how_to_use_command,
-        "/source-code": handle_source_code_command
+        "/source_code": handle_source_code_command
     }
 
     update = request.get_json()
