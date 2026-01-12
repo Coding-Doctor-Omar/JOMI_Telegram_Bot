@@ -1,6 +1,5 @@
 from flask import Flask, request
 from curl_cffi import requests as cureq
-from threading import Thread
 import requests
 import os
 
@@ -152,12 +151,9 @@ def process_message():
         "/how_to_use": handle_how_to_use_command
     }
 
-    try:
-        update = request.get_json()
-        chat_id = update["message"]["chat"]["id"]
-        user_message = update["message"]["text"]
-    except Exception:
-        return "OK", 200
+    update = request.get_json()
+    chat_id = update["message"]["chat"]["id"]
+    user_message = update["message"]["text"]
 
     if msg_is_valid(user_message):
         if user_message in valid_commands:
@@ -166,7 +162,7 @@ def process_message():
             return "OK", 200
         else:
             send_msg(chat_id=chat_id, msg="Processing video link...")
-            Thread(target=send_unlocked_content, args=(chat_id, user_message)).start()
+            send_unlocked_content(chat_id=chat_id, user_msg=user_message)
             return "OK", 200
 
     else:
