@@ -113,7 +113,7 @@ def handle_how_to_use_command(chat_id: int) -> None:
 
 def send_unlocked_content(chat_id: int, user_msg: str) -> None:
     video_url = [word.strip() for word in user_msg.split() if word.startswith("https")][0]
-    send_msg(chat_id=chat_id, msg=user_msg)
+    send_msg(chat_id=chat_id, msg=video_url)
     return
     unlocked_urls, page_html = unlock_video(vid_url=video_url)
     subtitles = get_subtitles(page_html=page_html)
