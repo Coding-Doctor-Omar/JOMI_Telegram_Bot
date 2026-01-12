@@ -103,7 +103,7 @@ def send_msg(chat_id: int, msg: str, parse_mode=None) -> None:
     res = requests.post(url=f"{TELEGRAM_API}{BOT_TOKEN}{method}", params=message)
 
 def handle_start_command(chat_id: int) -> None:
-    message = "Hello there! Welcome to JOMI BOT!\nBelow is a list of supported commands. To use the commands, check my menu or simply type the command as a message.\n\n/how_to_use  ---> Teaches you how to use me."
+    message = "Hello there! Welcome to JOMI BOT!\nBelow is a list of supported commands. To use the commands, check my menu or simply type the command as a message.\n\n/how_to_use  ---> Teaches you how to use me.\n/source_code ---> Sends you my source code link on GitHub."
     send_msg(chat_id=chat_id, msg=message)
 
 def handle_how_to_use_command(chat_id: int) -> None:
