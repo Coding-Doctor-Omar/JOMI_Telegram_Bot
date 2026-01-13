@@ -189,7 +189,7 @@ def home():
         <br>
         To use the bot, click <a href="https://t.me/jomi_downloader_bot">here</a>.
     </p>"""
-    return "<h1>Curious human, there is nothing to be seen here.</h1>", 200
+    return html, 200
 
 
 if __name__ == "__main__":
