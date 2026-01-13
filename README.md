@@ -1,5 +1,6 @@
 # JOMI TELEGRAM BOT
 ![QR Code](images/JOMI_BOT_QR.jpeg)
+
 Telegram URL: https://t.me/jomi_downloader_bot/
 
 ## What This Bot Does?
