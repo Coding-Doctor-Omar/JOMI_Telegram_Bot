@@ -183,7 +183,13 @@ def process_message():
 
 @app.route("/")
 def home():
-    return "<h1>JOMI BOT is properly deployed!</h1>", 200
+    html = """<h1>Curious human, there is nothing to be seen here.</h1>
+    <p>
+        This page is here to confirm that this telegram bot is properly deployed and ready to listen to users.
+        <br>
+        To use the bot, click <a href="https://t.me/jomi_downloader_bot">here</a>.
+    </p>"""
+    return "<h1>Curious human, there is nothing to be seen here.</h1>", 200
 
 
 if __name__ == "__main__":
