@@ -12,13 +12,13 @@ VALID_COMMANDS = ["/start", "/how_to_use", "/source_code"]
 def unlock_video(vid_url: str) -> tuple:
     try:
         res = cureq.get(vid_url, impersonate="edge")
-        separator = '"contentType":"video/mp4"'
+        separator = r'\\"contentType\\":\\"video/mp4\\"'
 
-        _224p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":224' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _360p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":360' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _540p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":540' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _720p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _1080p_ = [chunk.split('"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if '"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _224p_ = [chunk.split(r'\\"url\\":\\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\\"height\\":224' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _360p_ = [chunk.split(r'\\"url\\":\\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\\"height\\":360' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _540p_ = [chunk.split(r'\\"url\\":\\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\\"height\\":540' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _720p_ = [chunk.split(r'\\"url\\":\\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\\"height\\":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _1080p_ = [chunk.split(r'\\"url\\":\\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\\"height\\":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
     except Exception:
         return {}, ""
     else:
