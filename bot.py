@@ -14,11 +14,11 @@ def unlock_video(vid_url: str) -> tuple:
         res = cureq.get(vid_url, impersonate="edge")
         separator = r'\"contentType\":\"video/mp4\"'
 
-        _224p_ = [chunk.split(r'\"url\":\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\"height\":224' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _360p_ = [chunk.split(r'\"url\":\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\"height\":360' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _540p_ = [chunk.split(r'\"url\":\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\"height\":540' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _720p_ = [chunk.split(r'\"url\":\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\"height\":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _1080p_ = [chunk.split(r'\"url\":\"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'\"height\":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _224p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":224' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _360p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":360' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _540p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":540' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _720p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _1080p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
     except Exception:
         return {}, ""
     else:
