@@ -163,6 +163,11 @@ def process_message():
     try:
         chat_id = update["message"]["chat"]["id"]
         user_message = update["message"]["text"]
+        entities = update["message"].get("entities", [])
+        if entities:
+            links = [entity.get("url", "") for entity in entities]
+            first_link = links[0]
+            user_message += f" {first_link}"
     except Exception:
         return "OK", 200
 
@@ -177,7 +182,7 @@ def process_message():
             return "OK", 200
 
     else:
-        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.\n\nYour message: {user_message}")
+        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.")
         return "OK", 200
 
 
