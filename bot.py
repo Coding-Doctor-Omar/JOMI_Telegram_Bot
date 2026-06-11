@@ -74,8 +74,8 @@ def msg_is_valid(message: str) -> bool:
     if message in VALID_COMMANDS:
         return True
 
-    message_words = message.split()
-    first_link = [word.strip().replace("(", "").replace(")", "") for word in message_words if word.startswith("https") or word.startswith("(https")]
+    message_words = message.replace("[", "").replace("]", "").replace("(", "").replace(")", "").split()
+    first_link = [word.strip() for word in message_words if word.startswith("https")]
 
     if not first_link:
         return False
