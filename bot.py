@@ -14,21 +14,24 @@ def unlock_video(vid_url: str) -> tuple:
         res = cureq.get(vid_url, impersonate="edge")
         separator = r'"contentType":"video/mp4"'
 
-        _224p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":224' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _360p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":360' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _540p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":540' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _720p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":720' in chunk and '.bin' in chunk and 'image' not in chunk][0]
-        _1080p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk][0]
+        _224p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":224' in chunk and '.bin' in chunk and 'image' not in chunk] or [""]
+        _360p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":360' in chunk and '.bin' in chunk and 'image' not in chunk] or [""]
+        _540p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":540' in chunk and '.bin' in chunk and 'image' not in chunk] or [""]
+        _720p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":720' in chunk and '.bin' in chunk and 'image' not in chunk] or [""]
+        _1080p_ = [chunk.split(r'"url":"')[-1].split('.bin')[0] + '.mp4' for chunk in res.text.split(separator) if r'"height":1080' in chunk and '.bin' in chunk and 'image' not in chunk] or [""]
     except Exception:
         return {}, ""
     else:
-        return {
-            "224p": _224p_,
-            "360p": _360p_,
-            "540p": _540p_,
-            "720p": _720p_,
-            "1080p": _1080p_
-        }, res.text
+        if not _224p_[0] and not _360p_[0] and not _540p_[0] and not _720p_[0] and not _1080p_[0]:
+            return {}, ""
+        else:
+            return {
+                "224p": _224p_[0],
+                "360p": _360p_[0],
+                "540p": _540p_[0],
+                "720p": _720p_[0],
+                "1080p": _1080p_[0]
+            }, res.text
 
 def get_subtitles(page_html: str) -> bytes:
     content = ""
@@ -125,11 +128,11 @@ def send_unlocked_content(chat_id: int, user_msg: str) -> None:
 
     message = rf"""Voila! Your video has been unlocked! Choose the quality that fits you from the list below:
 
-<a href="{unlocked_urls['224p']}">Video (224p)</a>
-<a href="{unlocked_urls['360p']}">Video (360p)</a>
-<a href="{unlocked_urls['540p']}">Video (540p)</a>
-<a href="{unlocked_urls['720p']}">HD Video (720p)</a>
-<a href="{unlocked_urls['1080p']}">Full HD Video (1080p)</a>"""
+<a href="{unlocked_urls['224p'] or 'https://www.videoqualitynotavailable.com/'}">{'Video (224p)' if unlocked_urls['224p'] else 'Quality Not Available'}</a>
+<a href="{unlocked_urls['360p'] or 'https://www.videoqualitynotavailable.com/'}">{'Video (360p)' if unlocked_urls['360p'] else 'Quality Not Available'}</a>
+<a href="{unlocked_urls['540p'] or 'https://www.videoqualitynotavailable.com/'}">{'Video (540p)' if unlocked_urls['540p'] else 'Quality Not Available'}</a>
+<a href="{unlocked_urls['720p'] or 'https://www.videoqualitynotavailable.com/'}">{'HD Video (720p)' if unlocked_urls['720p'] else 'Quality Not Available'}</a>
+<a href="{unlocked_urls['1080p'] or 'https://www.videoqualitynotavailable.com/'}">{'FHD Video (1080p)' if unlocked_urls['1080p'] else 'Quality Not Available'}</a>"""
 
     send_msg(chat_id=chat_id, msg=message, parse_mode="HTML")
 
