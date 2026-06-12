@@ -1,6 +1,7 @@
 from flask import Flask, request
 from curl_cffi import requests as cureq
 import requests
+import json
 import os
 
 app = Flask(__name__)
@@ -185,7 +186,7 @@ def process_message():
             return "OK", 200
 
     else:
-        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.\n\n{user_message}")
+        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.\n\nMessage Data:\n{json.dumps(update)}")
         return "OK", 200
 
 
