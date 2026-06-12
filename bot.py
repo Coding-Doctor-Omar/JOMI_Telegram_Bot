@@ -171,7 +171,8 @@ def process_message():
         if entities:
             links = [entity.get("url", "") for entity in entities]
             first_link = links[0]
-            user_message += f" {first_link}"
+            if first_link:
+                user_message += f" {first_link}"
     except Exception:
         return "OK", 200
 
@@ -186,7 +187,7 @@ def process_message():
             return "OK", 200
 
     else:
-        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.\n\nMessage Data:\n{json.dumps(update)}")
+        send_msg(chat_id=chat_id, msg=f"The message you sent me is not a valid command or a valid link for any JOMI video page. Please try again.")
         return "OK", 200
 
 
